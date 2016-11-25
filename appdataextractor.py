@@ -1,6 +1,8 @@
 import requests
 import zipfile
 import tempfile
+from OpenSSL import crypto
+import struct
 
 def get_app_signature(apk_name):
 	tempdirectory = tempfile.gettempdir()
@@ -15,6 +17,38 @@ def get_app_signature(apk_name):
 		if 'META-INF' in file:
 			apk.extract(file)
 			print(file)
+
+
+	#certfilename = raw_input('Enter filename of certificate:')
+
+	#print(certfilename)
+
+	file = open('META-INF/CERT.RSA','rb')
+
+	file_content = file.read()
+
+	print(len(file_content))
+
+	struct.unpack("x253i",file_content)
+
+	try:
+	    byte = file.read(1)
+	    print(byte)
+	    while byte != "":
+	        # Do stuff with byte.
+	        byte = file.read(1)
+	        #print(byte)
+	        file_content += byte
+	finally:
+	    file.close()
+
+	print(file_content)
+
+	#file_content = file.read(4)
+
+	#print(file_content);
+
+	crypto.load_pkcs12(file_content)
 
 	
 
